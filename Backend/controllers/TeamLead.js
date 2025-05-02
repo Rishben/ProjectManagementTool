@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import Project from "../models/project.js";
 import TeamLead from "../models/TeamLead.js";
 
 import jwt from 'jsonwebtoken';
@@ -63,5 +64,57 @@ const registerTeamLead = async (req, res) => {
     }
 };
 
-export { loginTeamLead, registerTeamLead };
+const fetchProjects = async (req, res) => {
+    try {
+        const projects = await Project.find({ teamLeader: req.user.id });
+        res.status(200).json(projects);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+const addProjects = async (req, res) => {
+    const { projectName, description, projectCode } = req.body;
+    
+    const existingProject = await Project.findOne({ projectName, teamLeader: req.user.id });
+    if (existingProject) {
+        return res.status(400).json({ message: "Project already exists" });
+    }
+    
+    try {
+        const newProject = new Project({
+            projectName,
+            description,
+            projectCode,
+            teamLeader: req.user.id
+        });
+        
+        await newProject.save();
+        
+        res.status(201).json(newProject);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+const deleteProject = async (req, res) => {
+    const { title } = req.params;
+    
+    try {
+        const project = await Project.findOneAndDelete({ projectName: title, teamLeader: req.user.id });
+        
+        if (!project) {
+            return res.status(404).json({ message: "Project not found" });
+        }
+        
+        res.status(200).json({ message: "Project deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export { addProjects, deleteProject, fetchProjects, loginTeamLead, registerTeamLead };
 

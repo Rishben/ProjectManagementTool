@@ -1,9 +1,9 @@
 import axios from 'axios';
+import { motion } from "framer-motion";
+import { EyeIcon, EyeOffIcon, Lock, MailIcon, UserCheckIcon } from "lucide-react";
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import viewContext from "../context/ViewContext";
-import { motion } from "framer-motion";
-import { MailIcon, Lock, EyeIcon, EyeOffIcon, UserCheckIcon } from "lucide-react";
 
 const TeamLeadLogin = () => {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ const TeamLeadLogin = () => {
 
       // Success animation before redirect
       setTimeout(() => {
-        navigate('/teamLeaderHome');
+        navigate('/teamLeadDashboard');
         setFormData({
           email: '',
           password: '',
