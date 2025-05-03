@@ -16,6 +16,10 @@ const teamLeadSchema = new mongoose.Schema({
     },
     teamCode: {
         type: [String],
+    },
+    isOnline: {
+        type: Boolean,
+        default: false,
     }
 });
 

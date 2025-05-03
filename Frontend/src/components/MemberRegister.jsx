@@ -11,6 +11,7 @@ const MemberRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -32,7 +33,7 @@ const MemberRegister = () => {
       }
     }
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password, confirmPassword } = formData;
@@ -46,13 +47,16 @@ const MemberRegister = () => {
     setLoading(true);
     
     try {
-      await axios.post("http://localhost:3000/teamMember/register", {
+      const response = await axios.post("http://localhost:3000/teamMember/register", {
         name,
         email,
         password,
       });
       
-      // Success animation before redirect
+      // Show success state
+      setRegistrationSuccess(true);
+      
+      // Reset form and redirect after success
       setTimeout(() => {
         setFormData({
           name: "",
@@ -61,9 +65,9 @@ const MemberRegister = () => {
           confirmPassword: "",
         });
         setView("memberLogin");
-      }, 1000);
+      }, 1500);
     } catch (err) {
-      console.error(err);
+      console.error("Registration error:", err);
       setError(err.response?.data?.message || "Registration failed. Please try again.");
       setLoading(false);
     }
@@ -123,6 +127,17 @@ const MemberRegister = () => {
           className="bg-red-50 text-red-500 p-3 rounded-lg mb-4 text-sm font-medium"
         >
           {error}
+        </motion.div>
+      )}
+
+      {registrationSuccess && (
+        <motion.div 
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          className="bg-green-50 text-green-600 p-3 rounded-lg mb-4 text-sm font-medium flex items-center justify-center"
+        >
+          <CheckIcon className="h-5 w-5 mr-2" />
+          Registration successful! Redirecting to login...
         </motion.div>
       )}
       
@@ -267,9 +282,9 @@ const MemberRegister = () => {
         </motion.div>
         
         <motion.button
-          className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors font-medium flex items-center justify-center"
+          className={`w-full ${registrationSuccess ? 'bg-green-500' : 'bg-green-600'} text-white py-3 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors font-medium flex items-center justify-center`}
           type="submit"
-          disabled={loading}
+          disabled={loading || registrationSuccess}
           variants={buttonVariants}
           initial="rest"
           whileHover="hover"
@@ -280,8 +295,10 @@ const MemberRegister = () => {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
+          ) : registrationSuccess ? (
+            <CheckIcon className="h-5 w-5 mr-2" />
           ) : null}
-          {loading ? "Creating Account..." : "Create Account"}
+          {loading ? "Creating Account..." : registrationSuccess ? "Account Created!" : "Create Account"}
         </motion.button>
       </motion.form>
       

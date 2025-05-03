@@ -20,7 +20,12 @@ const teamMemberSchema = new mongoose.Schema({
   },
   teamCode: {
     type: [String],
-  }
+  },
+  isOnline: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-export default mongoose.model("TeamMember", teamMemberSchema);
+const TeamMember = mongoose.models.TeamMember || mongoose.model("TeamMember", teamMemberSchema);
+export default TeamMember;

@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import Project from "../models/project.js";
-import TeamLead from "../models/TeamLead.js";
+import TeamLead from "../models/teamLead.js";
+import TeamMember from "../models/teamMember.js";
 
 import jwt from 'jsonwebtoken';
 
@@ -18,6 +19,10 @@ const loginTeamLead = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
+
+    // Update online status to maintain consistency with TeamMember login
+    teamLead.isOnline = true;
+    await teamLead.save();
 
     const token = jwt.sign(
       { id: teamLead._id, email: teamLead.email },
@@ -39,6 +44,23 @@ const loginTeamLead = async (req, res) => {
   }
 };
 
+const logoutTeamLead = async (req, res) => {
+    try {
+      // Find the TeamLead by ID from the token data
+      const teamLead = await TeamLead.findById(req.user.id);
+      
+      if (teamLead) {
+        teamLead.isOnline = false;
+        await teamLead.save();
+      }
+  
+      res.clearCookie('token');
+      res.status(200).json({ message: "Logout successful" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
 
 const registerTeamLead = async (req, res) => {
     const { name, email, password } = req.body;
@@ -77,12 +99,12 @@ const fetchProjects = async (req, res) => {
 const addProjects = async (req, res) => {
     const { projectName, description, projectCode } = req.body;
     
-    const existingProject = await Project.findOne({ projectName, teamLeader: req.user.id });
-    if (existingProject) {
-        return res.status(400).json({ message: "Project already exists" });
-    }
-    
     try {
+        const existingProject = await Project.findOne({ projectName, teamLeader: req.user.id });
+        if (existingProject) {
+            return res.status(400).json({ message: "Project already exists" });
+        }
+        
         const newProject = new Project({
             projectName,
             description,
@@ -116,5 +138,14 @@ const deleteProject = async (req, res) => {
     }
 }
 
-export { addProjects, deleteProject, fetchProjects, loginTeamLead, registerTeamLead };
+const fetchTeamMembers = async (req, res) => {
+    try {
+        const teamMembers = await TeamMember.find();
+        res.status(200).json(teamMembers);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 
+export { addProjects, deleteProject, fetchProjects, loginTeamLead, registerTeamLead, fetchTeamMembers, logoutTeamLead };
