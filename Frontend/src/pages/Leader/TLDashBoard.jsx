@@ -41,6 +41,7 @@ const TLDashBoard = () => {
         ]);
         
         setProjects(projectsResponse.data);
+        console.log(projectsResponse.data);
         setTeamMembers(membersResponse.data);
       } catch (err) {
         console.log(err);
