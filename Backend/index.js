@@ -18,7 +18,7 @@ dotenv.config();
 connectDB();
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://projectmanagementtool-fe.onrender.com',
     credentials: true
 }));
 
