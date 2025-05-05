@@ -7,6 +7,7 @@ import connectDB from './config/DB.js';
 import cookieParser from 'cookie-parser';
 import TeamLead from './routes/TeamLead.js';
 import TeamMember from './routes/TeamMember.js';
+import JoinProject from './routes/JoinProject.js';
 
 const app=express();
 
@@ -29,6 +30,7 @@ app.get('/', (req, res) => {
 
 app.use("/teamLeader",TeamLead)
 app.use("/teamMember",TeamMember)
+app.use("/joinProject",JoinProject)
 
 
 app.listen(process.env.PORT, () => {

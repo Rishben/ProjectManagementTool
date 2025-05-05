@@ -1,16 +1,12 @@
 // components/ProjectCard.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { 
-  TrashIcon, 
-  CopyIcon, 
-  CheckIcon 
-} from "@radix-ui/react-icons";
-import { 
-  CalendarIcon, 
-  ChevronRightIcon, 
-  FolderIcon, 
-  UsersIcon 
+import { TrashIcon, CopyIcon, CheckIcon } from "@radix-ui/react-icons";
+import {
+  CalendarIcon,
+  ChevronRightIcon,
+  FolderIcon,
+  UsersIcon,
 } from "@heroicons/react/24/outline";
 
 const ProjectCard = ({ project, handleDeleteProject, showNotification }) => {
@@ -54,10 +50,7 @@ const ProjectCard = ({ project, handleDeleteProject, showNotification }) => {
             whileTap={{ scale: 0.9 }}
             className="text-gray-400 hover:text-red-500 p-2 rounded-full hover:bg-red-50 transition-colors"
             onClick={() =>
-              handleDeleteProject(
-                project.projectName,
-                project.projectCode
-              )
+              handleDeleteProject(project.projectName, project.projectCode)
             }
           >
             <TrashIcon className="w-5 h-5" />
@@ -76,9 +69,7 @@ const ProjectCard = ({ project, handleDeleteProject, showNotification }) => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className="ml-2 p-1 rounded-full text-gray-500 hover:bg-gray-200 transition-colors"
-            onClick={() =>
-              copyToClipboard(project.projectCode || "CODE123")
-            }
+            onClick={() => copyToClipboard(project.projectCode || "CODE123")}
             aria-label="Copy team code"
           >
             {copiedCode ? (
@@ -94,10 +85,15 @@ const ProjectCard = ({ project, handleDeleteProject, showNotification }) => {
             <CalendarIcon className="w-4 h-4 mr-1" />
             <span>Created {new Date().toLocaleDateString()}</span>
           </div>
-          <div className="flex items-center text-sm text-gray-500">
-            <UsersIcon className="w-4 h-4 mr-1" />
-            <span>5 members</span>
+          {/* Member Count */}
+          <div className="text-sm text-gray-600 flex items-center space-x-1">
+            <UsersIcon className="h-4 w-4 text-gray-500" />
+            <span>
+              {project.teamMembers?.length || 0}{" "}
+              {project.teamMembers?.length === 1 ? "member" : "members"}
+            </span>
           </div>
+
           <motion.button
             whileHover={{ x: 3 }}
             className="flex items-center text-blue-600 text-sm font-medium"

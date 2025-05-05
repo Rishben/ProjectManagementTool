@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
+import mailer from "../config/mailer.js";
 import Project from "../models/project.js";
 import TeamLead from "../models/teamLead.js";
 import TeamMember from "../models/teamMember.js";
-import mailer from "../config/mailer.js";
 
 import jwt from "jsonwebtoken";
 
@@ -209,18 +209,31 @@ const sendInvite = async (req, res) => {
         subject: `Invitation to join project: ${projectName}`,
         text: `Hello ${memberName},\n\nYou have been invited to join the project "${projectName}" with code "${projectCode}".\n\nMessage from ${teamLeadName}: ${message}\n\nBest regards,\n${teamLeadName}`,
         html: `
-              <div style="font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; text-align: center;">
-                <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 80%; max-width: 600px; margin: 0 auto;">
-                  <h1 style="color: #4CAF50; font-size: 24px; margin-bottom: 10px;">Project Invitation</h1>
-                  <p style="font-size: 16px; line-height: 1.5; color: #555;">Hello ${memberName},</p>
-                  <p style="font-size: 16px; line-height: 1.5; color: #555;">You have been invited to join the project <strong style="color: #4CAF50;">"${projectName}"</strong> with code <strong style="color: #4CAF50;">"${projectCode}"</strong>.</p>
-                  <div style="background-color: #e6f7e6; padding: 15px; border-radius: 5px; margin: 10px 0; font-size: 16px; color: #333;">
-                    <strong style="color: #4CAF50;">Message from ${teamLeadName}:</strong> ${message}
-                  </div>
-                  <p style="font-size: 16px; line-height: 1.5; color: #555;">Best regards,<br><span style="font-weight: bold; color: #333;">${teamLeadName}</span></p>
-                </div>
-              </div>
-              `,
+<div style="font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; text-align: center;">
+  <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 80%; max-width: 600px; margin: 0 auto;">
+    <h1 style="color: #4CAF50; font-size: 24px; margin-bottom: 10px;">Project Invitation</h1>
+    <p style="font-size: 16px; line-height: 1.5; color: #555;">Hello ${memberName},</p>
+    <p style="font-size: 16px; line-height: 1.5; color: #555;">
+      You have been invited to join the project <strong style="color: #4CAF50;">"${projectName}"</strong> with code 
+      <strong style="color: #4CAF50;">"${projectCode}"</strong>.
+    </p>
+    <div style="background-color: #e6f7e6; padding: 15px; border-radius: 5px; margin: 10px 0; font-size: 16px; color: #333;">
+      <strong style="color: #4CAF50;">Message from ${teamLeadName}:</strong> ${message}
+    </div>
+    <p style="font-size: 16px; line-height: 1.5; color: #555;">
+      You can use the Project Management Tool <strong style="color: #4CAF50;">TaskFlow</strong> to join the team using the project code,
+      or simply click the link below to join directly.
+    </p>
+    <a href="http://localhost:5173/join/${projectCode}/${teamMemberId}" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">
+      Join Project
+    </a>
+    <p style="font-size: 16px; line-height: 1.5; color: #555; margin-top: 20px;">
+      Best regards,<br>
+      <span style="font-weight: bold; color: #333;">${teamLeadName}</span>
+    </p>
+  </div>
+</div>
+        `,
       };
 
       const info = await mailer.sendMail(mailOptions);
@@ -255,10 +268,6 @@ const sendInvite = async (req, res) => {
 export {
   addProjects,
   deleteProject,
-  fetchProjects,
-  loginTeamLead,
-  registerTeamLead,
-  fetchTeamMembers,
-  logoutTeamLead,
-  sendInvite,
+  fetchProjects, fetchTeamMembers, loginTeamLead, logoutTeamLead, registerTeamLead, sendInvite
 };
+
