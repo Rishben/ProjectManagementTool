@@ -47,7 +47,7 @@ const MemberRegister = () => {
     setLoading(true);
     
     try {
-      const response = await axios.post("http://localhost:3000/teamMember/register", {
+      const response = await axios.post("https://projectmanagementtool-w3h4.onrender.com/teamMember/register", {
         name,
         email,
         password,

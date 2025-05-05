@@ -36,8 +36,8 @@ const TLDashBoard = () => {
     const fetchData = async () => {
       try {
         const [projectsResponse, membersResponse] = await Promise.all([
-          axios.get("http://localhost:3000/teamLeader/projects", { withCredentials: true }),
-          axios.get("http://localhost:3000/teamLeader/teamMembers", { withCredentials: true })
+          axios.get("https://projectmanagementtool-w3h4.onrender.com/teamLeader/projects", { withCredentials: true }),
+          axios.get("https://projectmanagementtool-w3h4.onrender.com/teamLeader/teamMembers", { withCredentials: true })
         ]);
         
         setProjects(projectsResponse.data);
@@ -60,7 +60,7 @@ const TLDashBoard = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get("http://localhost:3000/teamLeader/logout", {
+      await axios.get("https://projectmanagementtool-w3h4.onrender.com/teamLeader/logout", {
         withCredentials: true,
       });
       navigate("/");
@@ -81,7 +81,7 @@ const TLDashBoard = () => {
   const handleSubmitProject = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/teamLeader/projects",
+        "https://projectmanagementtool-w3h4.onrender.com/teamLeader/projects",
         newProject,
         { withCredentials: true }
       );
@@ -107,7 +107,7 @@ const TLDashBoard = () => {
   const confirmDeleteProject = async () => {
     try {
       await axios.delete(
-        `http://localhost:3000/teamLeader/projects/${projectToDelete.title}`,
+        `https://projectmanagementtool-w3h4.onrender.com/teamLeader/projects/${projectToDelete.title}`,
         {
           data: { title: projectToDelete.title, code: projectToDelete.code },
           withCredentials: true,

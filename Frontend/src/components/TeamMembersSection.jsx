@@ -40,7 +40,7 @@ const TeamMembersSection = ({ teamMembers, projects, showNotification }) => {
       const selectedProject = projects.find(p => p._id === inviteData.projectId);
       
       await axios.post(
-        "http://localhost:3000/teamLeader/sendInvite",
+        "https://projectmanagementtool-w3h4.onrender.com/teamLeader/sendInvite",
         {
           teamMemberId: selectedMember._id,
           email: selectedMember.email,

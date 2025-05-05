@@ -45,7 +45,7 @@ const TeamLeadRegister = () => {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:3000/teamLeader/register", {
+      await axios.post("https://projectmanagementtool-w3h4.onrender.com/teamLeader/register", {
         name: formData.name,
         email: formData.email,
         password: formData.password,
