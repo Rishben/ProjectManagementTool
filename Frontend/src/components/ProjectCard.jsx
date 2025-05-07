@@ -1,16 +1,18 @@
 // components/ProjectCard.jsx
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { TrashIcon, CopyIcon, CheckIcon } from "@radix-ui/react-icons";
 import {
   CalendarIcon,
   ChevronRightIcon,
   FolderIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
+import { CheckIcon, CopyIcon, TrashIcon } from "@radix-ui/react-icons";
+import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProjectCard = ({ project, handleDeleteProject, showNotification }) => {
   const [copiedCode, setCopiedCode] = useState(false);
+  const navigate = useNavigate();
 
   const copyToClipboard = (code) => {
     navigator.clipboard.writeText(code).then(() => {
@@ -97,6 +99,7 @@ const ProjectCard = ({ project, handleDeleteProject, showNotification }) => {
           <motion.button
             whileHover={{ x: 3 }}
             className="flex items-center text-blue-600 text-sm font-medium"
+            onClick={() => navigate(`/project/${project.projectCode}`)}
           >
             View details
             <ChevronRightIcon className="w-4 h-4 ml-1" />

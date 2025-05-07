@@ -13,6 +13,7 @@ import TeamMembersSection from "../../components/TeamMembersSection";
 
 const TLDashBoard = () => {
   const [projects, setProjects] = useState([]);
+  const [teamLeaderID, setTeamLeaderID] = useState("");
   const [teamMembers, setTeamMembers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -41,7 +42,8 @@ const TLDashBoard = () => {
         ]);
         
         setProjects(projectsResponse.data);
-        console.log(projectsResponse.data);
+        setTeamLeaderID(projectsResponse.data[0]?.teamLeader);
+        console.log(teamLeaderID)
         setTeamMembers(membersResponse.data);
       } catch (err) {
         console.log(err);
@@ -145,6 +147,7 @@ const TLDashBoard = () => {
       {/* Header Component */}
       <Header 
         handleLogout={handleLogout}
+        teamLeaderID={teamLeaderID}
       />
 
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6 p-5">

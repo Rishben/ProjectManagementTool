@@ -265,9 +265,24 @@ const sendInvite = async (req, res) => {
   }
 };
 
+const fetchTeamLeadName = async (req, res) => {
+  try{
+    const teamLead=await req.user.id;
+    const teamLeadName = await TeamLead.findById(teamLead).select("name");
+    if (!teamLeadName) {
+      return res.status(404).json({ message: "Team lead not found" });
+    }
+    res.status(200).json({ teamLeadName: teamLeadName.name });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 export {
   addProjects,
   deleteProject,
-  fetchProjects, fetchTeamMembers, loginTeamLead, logoutTeamLead, registerTeamLead, sendInvite
+  fetchProjects, fetchTeamMembers, loginTeamLead, logoutTeamLead, registerTeamLead, sendInvite,
+  fetchTeamLeadName
 };
 

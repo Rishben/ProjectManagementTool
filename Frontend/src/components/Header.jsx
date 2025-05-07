@@ -1,15 +1,16 @@
-// components/Header.jsx
 import {
-    BellIcon,
-    Cross1Icon,
-    ExitIcon,
-    HamburgerMenuIcon,
-    PersonIcon
+  BellIcon,
+  Cross1Icon,
+  ExitIcon,
+  HamburgerMenuIcon,
+  PersonIcon
 } from "@radix-ui/react-icons";
+import axios from "axios";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const Header = ({ handleLogout }) => {
+const Header = ({ handleLogout}) => {
+  const [teamLeaderName, setTeamLeaderName] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
@@ -40,6 +41,20 @@ const Header = ({ handleLogout }) => {
     setProfileMenuOpen(!profileMenuOpen);
     setNotificationsOpen(false);
   };
+  
+  const fetchTeamLeaderName = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/teamLeader/getTeamLeader`, { withCredentials: true });
+      setTeamLeaderName(response.data.teamLeadName);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+      fetchTeamLeaderName();
+  }, []);
+  
   
   return (
     <header className="bg-white w-full shadow-sm border-b border-gray-200">
@@ -163,7 +178,7 @@ const Header = ({ handleLogout }) => {
                 <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
                   <PersonIcon className="h-5 w-5" />
                 </div>
-                <span className="hidden lg:inline-block text-sm font-medium">John Doe</span>
+                <span className="hidden lg:inline-block text-sm font-medium">{teamLeaderName}</span>
               </motion.button>
               
               {/* Profile Dropdown */}

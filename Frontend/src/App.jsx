@@ -4,6 +4,7 @@ import TLDashBoard from './pages/Leader/TLDashBoard'
 import LoginRegistram from './pages/LoginRegistram'
 import JoinProject from './pages/Member/JoinProject'
 import TeamMemberHome from './pages/Member/TeamMemberHome'
+import Project from './pages/Project'
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
           <Route path="/teamLeadDashboard" element={<TLDashBoard />} />
           <Route path="/teamMemberHome" element={<TeamMemberHome />} />
           <Route path="/join/:code/:teamMemberId" element={<JoinProject />} />
+          <Route path="/project/:code" element={<Project />} />
         </Routes>
       </BrowserRouter>
   )
