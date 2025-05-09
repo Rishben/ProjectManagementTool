@@ -3,15 +3,18 @@ import "@radix-ui/themes/styles.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
-import ViewContextProvider from "./context/ViewContextProvider";
+import LRViewContextProvider from "./context/LoginView/ViewContextProvider.jsx";
+import ProjectViewContextProvider from "./context/ProjectView/ViewContextProvider.jsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ViewContextProvider>
+    <LRViewContextProvider>
+      <ProjectViewContextProvider>
         <Theme>
           <App />
         </Theme>
-    </ViewContextProvider>
+        </ProjectViewContextProvider>
+    </LRViewContextProvider>
   </StrictMode>
 );

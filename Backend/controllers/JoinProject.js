@@ -15,14 +15,32 @@ const JoinProject = async (req, res) => {
       return res.status(404).json({ message: "Team member not found" });
     }
 
-    if (project.teamMembers.includes(teamMemberId)) {
+    // Check if team member is already in the project
+    const memberExists = project.teamMembers.some(member => 
+      member._id && member._id.toString() === teamMemberId
+    );
+    
+    if (memberExists) {
       return res.status(400).json({ message: "Team member already in the project" });
     }
 
-    project.teamMembers.push(teamMemberId);
+    // Create a simplified team member object with only the needed fields
+    const simplifiedMember = {
+      _id: teamMember._id,
+      name: teamMember.name,
+      email: teamMember.email,
+      isOnline: teamMember.isOnline
+      // Password, teamLeader, and teamCode are excluded
+    };
+
+    // Add the team member object to the project's teamMembers array
+    project.teamMembers.push(simplifiedMember);
     await project.save();
 
-    res.status(200).json({ message: "Team member joined the project successfully" });
+    res.status(200).json({ 
+      message: "Team member joined the project successfully",
+      project: project
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

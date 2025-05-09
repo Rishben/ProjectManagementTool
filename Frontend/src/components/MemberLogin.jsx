@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { EyeIcon, EyeOffIcon, Lock, MailIcon } from "lucide-react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import viewContext from "../context/ViewContext";
+import viewContext from "../context/LoginView/ViewContext";
 
 const MemberLogin = () => {
   const navigate = useNavigate();

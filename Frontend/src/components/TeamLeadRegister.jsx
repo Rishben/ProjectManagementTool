@@ -2,7 +2,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { CheckIcon, EyeIcon, EyeOffIcon, Lock, MailIcon, UserIcon, UsersIcon } from "lucide-react";
 import { useContext, useState } from "react";
-import viewContext from "../context/ViewContext";
+import viewContext from "../context/LoginView/ViewContext";
 
 const TeamLeadRegister = () => {
   const { view, setView } = useContext(viewContext);

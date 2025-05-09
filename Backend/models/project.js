@@ -12,26 +12,37 @@ const projectSchema = new mongoose.Schema({
   projectCode: {
     type: String,
     required: true,
-  },
-  todo: {
-    type: [String],
-    
-  },
-  inProgress: {
-    type: [String],
-  },
-  done: {
-    type: [String],
+    unique: true,
   },
   teamLeader: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "TeamLead",
+    ref: "TeamLeader",
     required: true,
   },
-  teamMembers: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "TeamMember",
+  teamMembers: [
+    {
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "TeamMember"
+      },
+      name: {
+        type: String
+      },
+      email: {
+        type: String
+      },
+      isOnline: {
+        type: Boolean,
+        default: false
+      }
+    }
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 
-export default mongoose.model("Project", projectSchema);
+const Project = mongoose.model("Project", projectSchema);
+
+export default Project;

@@ -1,24 +1,51 @@
-import { motion } from 'framer-motion';
+import clsx from "clsx";
+import { motion } from "framer-motion";
 import {
   CheckSquare,
   Menu,
   MessageSquare,
   PenTool,
   Users,
-  X
-} from 'lucide-react';
-import React, { useState } from 'react';
+  X,
+} from "lucide-react";
+import React, { useContext, useState } from "react";
+import viewContext from "../context/ProjectView/ViewContext";
 
 const LeftNavbar = () => {
-  const [activeSidebarItem, setActiveSidebarItem] = useState('tasks');
+  const { view, setView } = useContext(viewContext);
   const [isOpen, setIsOpen] = useState(true);
 
   const navItems = [
-    { id: 'tasks', icon: <CheckSquare size={20} />, label: 'Tasks' },
-    { id: 'groupChat', icon: <MessageSquare size={20} />, label: 'Group Chat' },
-    { id: 'directMessages', icon: <MessageSquare size={20} />, label: 'Direct Messages' },
-    { id: 'drawing', icon: <PenTool size={20} />, label: 'Drawing Board' },
-    { id: 'members', icon: <Users size={20} />, label: 'Team Members' }
+    {
+      id: "tasks",
+      icon: <CheckSquare size={20} />,
+      label: "Tasks",
+      path: "/tasks",
+    },
+    {
+      id: "groupChat",
+      icon: <MessageSquare size={20} />,
+      label: "Group Chat",
+      path: "/groupChat",
+    },
+    {
+      id: "directMessages",
+      icon: <MessageSquare size={20} />,
+      label: "Direct Messages",
+      path: "/directMessage",
+    },
+    {
+      id: "drawing",
+      icon: <PenTool size={20} />,
+      label: "Drawing Board",
+      path: "/drawing",
+    },
+    {
+      id: "members",
+      icon: <Users size={20} />,
+      label: "Team Members",
+      path: "/members",
+    },
   ];
 
   const toggleSidebar = () => {
@@ -29,34 +56,34 @@ const LeftNavbar = () => {
   const sidebarVariants = {
     open: {
       width: "14rem",
-      transition: { duration: 0.3, ease: "easeInOut" }
+      transition: { duration: 0.3, ease: "easeInOut" },
     },
     closed: {
       width: "4rem",
-      transition: { duration: 0.3, ease: "easeInOut" }
-    }
+      transition: { duration: 0.3, ease: "easeInOut" },
+    },
   };
 
   const itemVariants = {
     open: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.2, ease: "easeOut" }
+      transition: { duration: 0.2, ease: "easeOut" },
     },
     closed: {
       opacity: 0,
       x: -10,
-      transition: { duration: 0.2, ease: "easeIn" }
-    }
+      transition: { duration: 0.2, ease: "easeIn" },
+    },
   };
 
   const iconVariants = {
     hover: { scale: 1.1, rotate: 5, transition: { duration: 0.2 } },
-    tap: { scale: 0.95, transition: { duration: 0.1 } }
+    tap: { scale: 0.95, transition: { duration: 0.1 } },
   };
-  
+
   return (
-    <motion.div 
+    <motion.div
       className="h-screen bg-gray-100 border-r border-gray-200 flex flex-col shadow-sm"
       variants={sidebarVariants}
       animate={isOpen ? "open" : "closed"}
@@ -82,24 +109,22 @@ const LeftNavbar = () => {
           {isOpen ? <X size={20} /> : <Menu size={20} />}
         </motion.button>
       </div>
-      
+
       <div className="py-4 flex-grow overflow-y-auto">
         <ul>
           {navItems.map((item) => (
             <li key={item.id}>
-              <motion.button
-                className={`flex items-center w-full px-4 py-3 text-left`}
-                onClick={() => setActiveSidebarItem(item.id)}
-                animate={{
-                  backgroundColor: activeSidebarItem === item.id ? '#dbeafe' : 'transparent',
-                  color: activeSidebarItem === item.id ? '#2563eb' : '#374151'
+              <div
+                className={clsx(
+                  "flex items-center w-full px-4 py-3 text-left text-gray-700 hover:bg-gray-200 cursor-pointer",
+                  {
+                    "bg-blue-100 text-blue-700 font-medium border-l-4 border-blue-500":
+                      view === item.id,
+                  }
+                )}
+                onClick={() => {
+                  setView(item.id);
                 }}
-                whileHover={{ 
-                  backgroundColor: activeSidebarItem === item.id ? '#dbeafe' : '#f3f4f6'
-                }}
-                whileTap={{ scale: 0.98 }}
-                initial={false}
-                transition={{ duration: 0.2 }}
               >
                 <motion.div
                   className="mr-3"
@@ -119,21 +144,11 @@ const LeftNavbar = () => {
                     {item.label}
                   </motion.span>
                 )}
-              </motion.button>
+              </div>
             </li>
           ))}
         </ul>
       </div>
-      
-      {/* Mobile view toggle button (visible only on small screens) */}
-      <motion.button
-        className="lg:hidden fixed bottom-4 left-4 bg-blue-500 text-white p-3 rounded-full shadow-lg z-50"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={toggleSidebar}
-      >
-        {isOpen ? <X size={20} /> : <Menu size={20} />}
-      </motion.button>
     </motion.div>
   );
 };

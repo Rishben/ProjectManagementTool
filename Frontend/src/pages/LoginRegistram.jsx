@@ -3,7 +3,7 @@ import MemberLogin from "../components/MemberLogin"
 import MemberRegister from "../components/MemberRegister"
 import TeamLeadLogin from "../components/TeamLeadLogin"
 import TeamLeadRegister from "../components/TeamLeadRegister"
-import ViewContext from '../context/ViewContext'
+import ViewContext from '../context/LoginView/ViewContext'
 
 const LoginRegistram = () => {
     const { view } = useContext(ViewContext)
@@ -22,7 +22,6 @@ const LoginRegistram = () => {
                 return null;
         }
     }
-
     return (
         <div className='w-full min-h-screen bg-gray-100 flex items-center justify-center'>
             {renderComponent()}
