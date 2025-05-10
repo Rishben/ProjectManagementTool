@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { motion } from "framer-motion";
 import { EyeIcon, EyeOffIcon, Lock, MailIcon, UserCheckIcon } from "lucide-react";
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
 import viewContext from "../context/LoginView/ViewContext";
 
 const TeamLeadLogin = () => {
@@ -11,6 +12,22 @@ const TeamLeadLogin = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const socket = io('http://localhost:3000');
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Connected to Socket.IO server');
+    });
+  
+    socket.on('disconnect', () => {
+      console.log('Disconnected from Socket.IO server');
+    });
+  
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const [formData, setFormData] = useState({
     email: '',
